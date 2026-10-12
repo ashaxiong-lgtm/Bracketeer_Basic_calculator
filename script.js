@@ -217,6 +217,7 @@ const KEYBOARD = {
 
 document.addEventListener("keydown", (e) => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.target.closest("#theme-toggle, .history")) return; // let those buttons use Enter normally
   const key = isDigit(e.key) ? e.key : KEYBOARD[e.key];
   if (!key) return;
   e.preventDefault(); // also stops Enter from clicking a focused button
@@ -236,3 +237,31 @@ clearHistoryBtn.addEventListener("click", () => {
 
 render();
 renderHistory();
+
+/* ---------- theme (light / dark) ---------- */
+
+const themeBtn = document.getElementById("theme-toggle");
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  themeBtn.setAttribute("aria-pressed", String(theme === "dark"));
+  themeBtn.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+  if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#0c0f1d" : "#e9ecff");
+}
+
+themeBtn.addEventListener("click", () => {
+  const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try { localStorage.setItem("bracketeer-theme", next); } catch {}
+});
+
+// follow the device setting until the user picks a theme themselves
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+systemDark.addEventListener("change", (e) => {
+  let saved = null;
+  try { saved = localStorage.getItem("bracketeer-theme"); } catch {}
+  if (!saved) applyTheme(e.matches ? "dark" : "light");
+});
+
+applyTheme(document.documentElement.getAttribute("data-theme") || "light");
