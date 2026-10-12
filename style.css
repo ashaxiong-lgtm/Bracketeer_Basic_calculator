@@ -114,6 +114,7 @@ body::before {
   max-width: 440px;
   width: 100%;
   justify-self: center;
+  padding: 20px;
 }
 .brand h1 {
   margin: 0;
