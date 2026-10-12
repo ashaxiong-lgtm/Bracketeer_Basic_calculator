@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bracketeer – a calculator with brackets</title>
+  <meta name="description" content="Bracketeer is a basic calculator with nested brackets, live results and keyboard support.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <h1>Bracketeer</h1>
+      <p>Every bracket gets its own colour, so nested sums stay readable.</p>
+    </header>
+
+    <section class="calc" aria-label="Bracketeer calculator">
+      <div class="screen">
+        <div id="expr" class="expr" aria-label="Expression"></div>
+        <div id="preview" class="preview" aria-live="polite"></div>
+      </div>
+
+      <div class="keys">
+        <button class="key fn" data-key="ac" aria-label="Clear all">AC</button>
+        <button class="key fn" data-key="del" aria-label="Backspace">⌫</button>
+        <button class="key bracket" data-key="(" aria-label="Open bracket">(</button>
+        <button class="key bracket" data-key=")" aria-label="Close bracket">)</button>
+
+        <button class="key" data-key="7">7</button>
+        <button class="key" data-key="8">8</button>
+        <button class="key" data-key="9">9</button>
+        <button class="key op" data-key="÷" aria-label="Divide">÷</button>
+
+        <button class="key" data-key="4">4</button>
+        <button class="key" data-key="5">5</button>
+        <button class="key" data-key="6">6</button>
+        <button class="key op" data-key="×" aria-label="Multiply">×</button>
+
+        <button class="key" data-key="1">1</button>
+        <button class="key" data-key="2">2</button>
+        <button class="key" data-key="3">3</button>
+        <button class="key op" data-key="−" aria-label="Subtract">−</button>
+
+        <button class="key wide" data-key="0">0</button>
+        <button class="key" data-key="." aria-label="Decimal point">.</button>
+        <button class="key op" data-key="+" aria-label="Add">+</button>
+
+        <button class="key equals" data-key="eq" aria-label="Equals">=</button>
+      </div>
+    </section>
+
+    <aside class="history" aria-label="Recent calculations">
+      <div class="history-head">
+        <h2>Recent</h2>
+        <button id="clear-history" class="link-btn" type="button">Clear</button>
+      </div>
+      <ol id="history"></ol>
+      <p class="hint">Keyboard: digits, + − * /, ( ), Enter, Backspace, Esc.</p>
+    </aside>
+  </main>
+
+  <script src="engine.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

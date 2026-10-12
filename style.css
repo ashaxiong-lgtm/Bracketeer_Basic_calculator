@@ -1,0 +1,233 @@
+:root {
+  --page: #1b1429;
+  --body: #2a1f40;
+  --screen: #181022;
+  --key: #3a2d56;
+  --key-hover: #47386a;
+  --key-press: #54437d;
+  --text: #f6f1ff;
+  --muted: #a99bc8;
+  --tangerine: #ff8a4c;
+  --tangerine-hover: #ff9d68;
+  --error: #ff7b8a;
+  --d0: #5fe0b5;
+  --d1: #7fb8ff;
+  --d2: #ff8fc7;
+  --d3: #ffd166;
+  --radius: 16px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-variant-numeric: tabular-nums;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+.shell {
+  width: 100%;
+  max-width: 880px;
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  grid-template-areas:
+    "brand brand"
+    "calc  history";
+  gap: 24px 40px;
+  align-items: start;
+}
+
+.brand { grid-area: brand; }
+.brand h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.brand p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+/* ---------- calculator ---------- */
+
+.calc {
+  grid-area: calc;
+  background: var(--body);
+  border-radius: 28px;
+  padding: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.screen {
+  background: var(--screen);
+  border-radius: var(--radius);
+  padding: 14px 16px 12px;
+  margin-bottom: 16px;
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.expr {
+  font-size: 2.1rem;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-height: 2.6rem;
+  letter-spacing: 0.01em;
+}
+.expr::-webkit-scrollbar { display: none; }
+.expr.final { font-size: 2.6rem; font-weight: 800; }
+.expr .op { color: var(--tangerine); padding: 0 0.08em; }
+.expr .b { font-weight: 800; }
+.expr .ghost { opacity: 0.3; }
+.b.d0 { color: var(--d0); }
+.b.d1 { color: var(--d1); }
+.b.d2 { color: var(--d2); }
+.b.d3 { color: var(--d3); }
+
+.preview {
+  min-height: 1.4rem;
+  text-align: right;
+  font-size: 1.05rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.preview.error { color: var(--error); }
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.key {
+  font: inherit;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--key);
+  border: 0;
+  border-radius: var(--radius);
+  height: 62px;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.08s;
+}
+.key:hover { background: var(--key-hover); }
+.key:active, .key.pressed { background: var(--key-press); transform: scale(0.96); }
+
+.key.fn { color: var(--muted); font-size: 1.15rem; }
+.key.bracket { font-weight: 800; font-size: 1.7rem; color: var(--d0); }
+.key.bracket[data-key=")"] { color: var(--d2); }
+.key.op { color: var(--tangerine); font-size: 1.7rem; }
+.key.wide { grid-column: span 2; }
+.key.equals {
+  grid-column: span 4;
+  background: var(--tangerine);
+  color: #2b1300;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+.key.equals:hover { background: var(--tangerine-hover); }
+.key.equals:active, .key.equals.pressed { background: #e87636; }
+
+:focus-visible {
+  outline: 3px solid var(--d1);
+  outline-offset: 2px;
+}
+
+/* ---------- history ---------- */
+
+.history {
+  grid-area: history;
+  padding-top: 6px;
+}
+.history-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.history h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.history ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.history .empty { color: var(--muted); }
+
+.history-item {
+  font: inherit;
+  width: 100%;
+  text-align: left;
+  color: var(--text);
+  background: var(--body);
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: grid;
+  gap: 2px;
+  cursor: pointer;
+}
+.history-item:hover { background: var(--key); }
+.h-expr { color: var(--muted); font-size: 0.95rem; overflow-wrap: anywhere; }
+.h-answer { font-size: 1.25rem; font-weight: 600; }
+
+.link-btn {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.link-btn:hover { color: var(--text); }
+
+.hint {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 760px) {
+  body { place-items: start center; }
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "brand" "calc" "history";
+    gap: 20px;
+  }
+  .calc { max-width: 420px; width: 100%; margin: 0 auto; }
+  .history { max-width: 420px; width: 100%; margin: 0 auto; }
+  .key { height: 56px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .key { transition: none; }
+  .key:active, .key.pressed { transform: none; }
+}
